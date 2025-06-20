@@ -40,3 +40,31 @@ void inOrden(Nodo* raiz) {
         inOrden(raiz->derecha);
     }
 }
+int main() {
+    Nodo* raiz = NULL;
+    string nombre;
+    int anio;
+
+    cout << "Ingrese el nombre del primer miembro (raíz): ";
+    cin >> nombre;
+    cout << "Ingrese el año de nacimiento: ";
+    cin >> anio;
+    insertar(raiz, nombre, anio);
+
+    cout << "Ingrese el nombre del segundo miembro: ";
+    cin >> nombre;
+    cout << "Ingrese el año de nacimiento: ";
+    cin >> anio;
+    insertar(raiz, nombre, anio);
+
+    cout << "Ingrese el nombre del tercer miembro: ";
+    cin >> nombre;
+    cout << "Ingrese el año de nacimiento: ";
+    cin >> anio;
+    insertar(raiz, nombre, anio);
+
+    cout << "\nRecorrido InOrden del árbol:\n";
+    inOrden(raiz);
+
+    return 0;
+}
