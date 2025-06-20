@@ -19,3 +19,24 @@ Nodo* crearNodo(string nombre, int anio) {
     nuevo->derecha = NULL;
     return nuevo;
 }
+// Inserción en Árbol Binario de Búsqueda (ABB)
+void insertar(Nodo*& raiz, string nombre, int anio) {
+    if (raiz == NULL) {
+        raiz = crearNodo(nombre, anio);
+    } else {
+        if (anio < raiz->anio) {
+            insertar(raiz->izquierda, nombre, anio);
+        } else {
+            insertar(raiz->derecha, nombre, anio);
+        }
+    }a
+}
+
+// Recorrido InOrden (izquierda - nodo - derecha)
+void inOrden(Nodo* raiz) {
+    if (raiz != NULL) {
+        inOrden(raiz->izquierda);
+        cout << raiz->nombre << " (" << raiz->anio << ")" << endl;
+        inOrden(raiz->derecha);
+    }
+}
