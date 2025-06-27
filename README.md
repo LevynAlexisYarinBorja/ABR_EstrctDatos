@@ -31,71 +31,60 @@ Nodo* insertar(Nodo* raiz, string nombre, int anio) {
     return raiz;
 }
 
-struct Nodo {
-    string nombre;
-    int anio;
-    Nodo* izquierda;
-    Nodo* derecha;
-};
+Nodo* buscar(Nodo* raiz, string nombre) {
+    if (raiz == NULL) return NULL;
+    if (raiz->nombre == nombre) return raiz;
 
-// Función para crear un nuevo nodo
-Nodo* crearNodo(string nombre, int anio) {
-    Nodo* nuevo = new Nodo;
-    nuevo->nombre = nombre;
-    nuevo->anio = anio;
-    nuevo->izquierda = NULL;
-    nuevo->derecha = NULL;
-    return nuevo;
+    Nodo* izq = buscar(raiz->izquierda, nombre);
+    if (izq != NULL) return izq;
+    return buscar(raiz->derecha, nombre);
 }
-// Inserción en Árbol Binario de Búsqueda (ABB)
-void insertar(Nodo*& raiz, string nombre, int anio) {
-    if (raiz == NULL) {
-        raiz = crearNodo(nombre, anio);
-    } else {
-        if (anio < raiz->anio) {
-            insertar(raiz->izquierda, nombre, anio);
-        } else {
-            insertar(raiz->derecha, nombre, anio);
+
+Nodo* buscarPorAnio(Nodo* raiz, int anio) {
+    if (raiz == NULL) return NULL;
+    if (raiz->anio == anio) return raiz;
+    if (anio < raiz->anio) return buscarPorAnio(raiz->izquierda, anio);
+    return buscarPorAnio(raiz->derecha, anio);
+}
+
+Nodo* minimo(Nodo* raiz) {
+    while (raiz && raiz->izquierda != NULL) raiz = raiz->izquierda;
+    return raiz;
+}
+
+Nodo* eliminar(Nodo* raiz, int anio) {
+    if (raiz == NULL) return NULL;
+
+    if (anio < raiz->anio)
+        raiz->izquierda = eliminar(raiz->izquierda, anio);
+    else if (anio > raiz->anio)
+        raiz->derecha = eliminar(raiz->derecha, anio);
+    else {
+        if (raiz->izquierda == NULL) {
+            Nodo* temp = raiz->derecha;
+            delete raiz;
+            return temp;
+        } else if (raiz->derecha == NULL) {
+            Nodo* temp = raiz->izquierda;
+            delete raiz;
+            return temp;
         }
-    }a
+        Nodo* temp = minimo(raiz->derecha);
+        raiz->anio = temp->anio;
+        raiz->nombre = temp->nombre;
+        raiz->derecha = eliminar(raiz->derecha, temp->anio);
+    }
+    return raiz;
 }
 
-// Recorrido InOrden (izquierda - nodo - derecha)
-void inOrden(Nodo* raiz) {
+void inorden(Nodo* raiz) {
     if (raiz != NULL) {
-        inOrden(raiz->izquierda);
-        cout << raiz->nombre << " (" << raiz->anio << ")" << endl;
-        inOrden(raiz->derecha);
-    }
+        inorden(raiz->izquierda);
+        cout << raiz->nombre << " (" << raiz->anio << ")\n";
+        inorden(raiz->derecha);
+    }
 }
-int main() {
-    Nodo* raiz = NULL;
-    string nombre;
-    int anio;
 
-    cout << "Ingrese el nombre del primer miembro (raíz): ";
-    cin >> nombre;
-    cout << "Ingrese el año de nacimiento: ";
-    cin >> anio;
-    insertar(raiz, nombre, anio);
-
-    cout << "Ingrese el nombre del segundo miembro: ";
-    cin >> nombre;
-    cout << "Ingrese el año de nacimiento: ";
-    cin >> anio;
-    insertar(raiz, nombre, anio);
-
-    cout << "Ingrese el nombre del tercer miembro: ";
-    cin >> nombre;
-    cout << "Ingrese el año de nacimiento: ";
-    cin >> anio;
-    insertar(raiz, nombre, anio);
-
-    cout << "\nRecorrido InOrden del árbol:\n";
-    inOrden(raiz);
-
-    return 0;
-}
 bool ancestros(Nodo* raiz, string nombre) {
     if (raiz == NULL) return false;
     if (raiz->nombre == nombre) return true;
