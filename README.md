@@ -68,3 +68,35 @@ int main() {
 
     return 0;
 }
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Nodo {
+    string nombre;
+    int anio;
+    Nodo* izquierda;
+    Nodo* derecha;
+};
+
+Nodo* crearNodo(string nombre, int anio) {
+    Nodo* nuevo = new Nodo;
+    nuevo->nombre = nombre;
+    nuevo->anio = anio;
+    nuevo->izquierda = NULL;
+    nuevo->derecha = NULL;
+    return nuevo;
+}
+
+Nodo* insertar(Nodo* raiz, string nombre, int anio) {
+    if (raiz == NULL) return crearNodo(nombre, anio);
+
+    if (anio < raiz->anio)
+        raiz->izquierda = insertar(raiz->izquierda, nombre, anio);
+    else if (anio > raiz->anio)
+        raiz->derecha = insertar(raiz->derecha, nombre, anio);
+    else
+        cout << "El miembro ya existe\n";
+
+    return raiz;
+}
